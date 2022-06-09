@@ -9,14 +9,17 @@ import java.util.Map;
 public class CardCell implements CellService {
     private final Map<Direction, CellService> connectedCells;
     private Card card;
+    private boolean hasCard;
 
     public CardCell(){
         connectedCells = new EnumMap<>(Direction.class);
+        this.hasCard = false;
     }
 
     public CardCell(Card card){
         connectedCells = new EnumMap<>(Direction.class);
         this.card = card;
+        this.hasCard = true;
     }
 
     @Override
@@ -41,14 +44,13 @@ public class CardCell implements CellService {
 
     @Override
     public boolean isCard() {
-        return card != null;
+        return hasCard;
     }
 
     @Override
     public Card getCard(){
-        Card tempCard = card;
-        card = null;
-        return tempCard;
+        this.hasCard = false;
+        return card;
     }
 
     @Override
@@ -56,7 +58,7 @@ public class CardCell implements CellService {
         connectedCells.put(direction, cell);
     }
 
-    public void setCard(Card card){
-        this.card = card;
+    public void setCard(boolean hasCard){
+        this.hasCard = hasCard;
     }
 }

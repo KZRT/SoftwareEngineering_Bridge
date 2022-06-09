@@ -1,4 +1,4 @@
-package view.mainView;
+package view.mainView.GUI;
 
 import controller.GameController;
 

@@ -1,12 +1,12 @@
-package view.mainView;
+package view.mainView.GUI;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class CellView extends JPanel {
+public class CellPanel extends JPanel {
     Image image;
-    public CellView(){
+    public CellPanel(){
         super();
         this.setPreferredSize(new Dimension(50, 50));
         this.setLayout(new GridLayout(2, 2));
@@ -22,8 +22,7 @@ public class CellView extends JPanel {
     }
 
     public void setCellImage(String imageName){
-        image = new ImageIcon("./src/view/resources/" + imageName + ".png").getImage();
-        System.out.println(image);
+        image = new ImageIcon("./resources/images/" + imageName + ".png").getImage();
     }
 
     @Override
@@ -37,15 +36,16 @@ public class CellView extends JPanel {
     }
 
     public void setPlayer(int playerID){
-        JLabel playerLabel = new JLabel();
-        playerLabel.setText(String.valueOf(playerID));
-        playerLabel.setFont(new Font("Arial", Font.BOLD, 15));
-        playerLabel.setPreferredSize(new Dimension(25, 25));
-        playerLabel.setForeground(Color.getHSBColor(playerID * 0.1f, 1.0f, 1.0f));
-        this.add(playerLabel);
+        JPanel playerPanel = new JPanel();
+        playerPanel.setBackground(Color.getHSBColor(playerID * 0.1f, 1.0f, 1.0f));
+        playerPanel.add(new JLabel(playerID + ""));
+        this.add(playerPanel);
     }
 
     public void deletePlayer(){
         this.removeAll();
+    }
+    public void deleteGraphics(){
+        this.image = null;
     }
 }

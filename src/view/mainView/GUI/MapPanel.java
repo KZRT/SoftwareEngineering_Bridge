@@ -1,48 +1,26 @@
-package view.mainView;
+package view.mainView.GUI;
 
 import model.*;
 import model.cell.BridgeCell;
+import model.cell.CardCell;
 import model.cell.CellService;
+import view.mainView.Index;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MapView extends JPanel {
-    private class Index {
-        private final int row;
-        private final int col;
-
-        public Index(int row, int col) {
-            this.row = row;
-            this.col = col;
-        }
-
-        public int getRow() {
-            return row;
-        }
-
-        public int getCol() {
-            return col;
-        }
-
-        @Override
-        public String toString() {
-            return row + " " + col;
-        }
-    }
-    private static MapView mapView;
+public class MapPanel extends JPanel {
     private GameManager gameManager;
     public static final int CELL_SIZE = 50;
     private HashMap<CellService, Index> cellIndexMap;
     private ArrayList<Index> bridgeIndexes;
-    private ArrayList<Index> playerIndexes;
     private int minRow, minCol, maxRow, maxCol;
     private Dimension mapSize;
-    private ArrayList<ArrayList<CellView>> gridCellViews;
+    private ArrayList<ArrayList<CellPanel>> gridCellViews;
 
-    public MapView(GameManager gameManager) {
+    public MapPanel(GameManager gameManager) {
         this.gameManager = gameManager;
         this.cellIndexMap = new HashMap<>();
         this.bridgeIndexes = new ArrayList<>();
@@ -65,7 +43,6 @@ public class MapView extends JPanel {
                     }
                 }
                 cellIndexMap.put(cell, new Index(currentRow, currentCol));
-                System.out.println(currentRow + " " + currentCol);
                 continue;
             }else {
                 for (Direction d : Direction.values()){
@@ -77,8 +54,17 @@ public class MapView extends JPanel {
                 }
             }
             if(tempDirection == null){
-                System.out.println("tempDirection is null");
-                continue;
+                if(cell.getClass().getSimpleName().equals("BridgeCell")){
+                    if(cell.isBridge() && cell.canMove(Direction.LEFT)){
+                        tempDirection = Direction.LEFT;
+                    } else if(!cell.isBridge() && cell.canMove(Direction.RIGHT)){
+                        tempDirection = Direction.RIGHT;
+                    } else {
+                        tempDirection = previousDirection;
+                    }
+                } else {
+                    continue;
+                }
             }
             switch (previousDirection){
                 case LEFT -> {
@@ -100,83 +86,85 @@ public class MapView extends JPanel {
             }
             previousDirection = tempDirection;
             cellIndexMap.put(cell, new Index(currentRow, currentCol));
-            System.out.println(currentRow + " " + currentCol);
         }
-        System.out.println(minRow + " " + minCol + " " + maxRow + " " + maxCol);
         this.setLayout(new GridLayout(maxRow - minRow + 2, maxCol - minCol + 2));
         this.mapSize = new Dimension((maxCol - minCol + 2) * CELL_SIZE, (maxRow - minRow + 2) * CELL_SIZE);
         this.setPreferredSize(mapSize);
 
         for(int i = 0; i < maxRow - minRow + 2; i++){
-            ArrayList<CellView> row = new ArrayList<>();
+            ArrayList<CellPanel> row = new ArrayList<>();
             for(int j = 0; j < maxCol - minCol + 2; j++){
-                CellView cellView = new CellView();
-                cellView.setCellColor(Color.WHITE);
-                this.add(cellView);
-                row.add(cellView);
+                CellPanel cellPanel = new CellPanel();
+                cellPanel.setCellColor(Color.WHITE);
+                this.add(cellPanel);
+                row.add(cellPanel);
             }
             gridCellViews.add(row);
         }
     }
 
-    public Dimension getMapSize(){
-        return mapSize;
-    }
-
     public void printMap() {
         for(CellService cell : gameManager.getBridgeMap()){
             Index currentCellIndex = cellIndexMap.get(cell);
-            CellView cellView = gridCellViews.get(currentCellIndex.row - minRow).get(currentCellIndex.col - minCol);
-            cellView.deletePlayer();
-            cellView.setBorder();
+            CellPanel cellPanel = gridCellViews.get(currentCellIndex.getRow() - minRow).get(currentCellIndex.getCol() - minCol);
+            cellPanel.deletePlayer();
+            cellPanel.setBorder();
             switch (cell.getClass().getSimpleName()) {
                 case "StartCell" -> {
-                    cellView.setCellSize(new Dimension(100, 100));
-                    cellView.setCellColor(Color.BLACK);
+                    cellPanel.setCellSize(new Dimension(100, 100));
+                    cellPanel.setCellColor(Color.YELLOW);
+                    cellPanel.add(new JLabel("S"));
                 }
                 case "BridgeCell" -> {
                     if(cell.isBridge()){
-                        cellView.setCellImage("Bridge");
+                        cellPanel.setCellImage("Bridge");
                         Index connectedBridge = cellIndexMap.get(cell.moveBridge());
-                        for(int col = currentCellIndex.col + 1; col < connectedBridge.col; col++){
-                            bridgeIndexes.add(new Index(currentCellIndex.row, col));
+                        for(int col = currentCellIndex.getCol() + 1; col < connectedBridge.getCol(); col++){
+                            bridgeIndexes.add(new Index(currentCellIndex.getRow(), col));
                         }
+                    } else {
+                        cellPanel.setCellColor(new Color(0xfae39a));
                     }
                 }
                 case "CardCell" -> {
                     if(cell.isCard()){
                         switch (cell.getCard()){
                             case PHILIPS_DRIVER -> {
-                                cellView.setCellImage("Philips");
+                                cellPanel.setCellImage("Philips");
                             }
                             case SAW -> {
-                                cellView.setCellImage("Saw");
+                                cellPanel.setCellImage("Saw");
                             }
                             case HAMMER -> {
-                                cellView.setCellImage("Hammer");
+                                cellPanel.setCellImage("Hammer");
                             }
                         }
+                        ((CardCell)cell).setCard(true);
+                    } else {
+                        cellPanel.deleteGraphics();
+                        cellPanel.setCellColor(new Color(0xfae39a));
                     }
-                    cellView.setCellColor(Color.cyan);
                 }
                 case "EndCell" -> {
-                    cellView.setCellSize(new Dimension(100, 100));
-                    cellView.setCellColor(Color.GREEN);
+                    cellPanel.setCellSize(new Dimension(100, 100));
+                    cellPanel.setCellColor(Color.GREEN);
+                    cellPanel.add(new JLabel("END"));
                 }
                 default -> {
-                    cellView.setCellColor(Color.YELLOW);
+                    cellPanel.setCellColor(new Color(0xfae39a));
                 }
             }
             for(Player player: gameManager.getPlayers()){
                 if(player.getCurrentCell() == cell){
-                    cellView.setPlayer(player.getId());
+                    cellPanel.setPlayer(player.getId());
                 }
             }
         }
         for(Index index : bridgeIndexes){
-            CellView cellView = gridCellViews.get(index.getRow() - minRow).get(index.getCol() - minCol);
-            cellView.setBorder();
-            cellView.setCellColor(Color.BLUE);
+            CellPanel cellPanel = gridCellViews.get(index.getRow() - minRow).get(index.getCol() - minCol);
+            cellPanel.setBorder();
+            cellPanel.setCellColor(Color.WHITE);
+            cellPanel.setCellImage("BridgeConnect");
         }
         this.repaint();
     }

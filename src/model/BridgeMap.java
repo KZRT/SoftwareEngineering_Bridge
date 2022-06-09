@@ -3,24 +3,26 @@ package model;
 import model.cell.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class BridgeMap {
-    private final Queue<BridgeCell> bridgeQueue;
     private CellService previousCell;
     private Direction previousDirection;
     private final ArrayList<CellService> mapArrayList;
+    private final HashMap<Integer, CellService> bridgeMap;
+    private int yIndex;
 
     public BridgeMap() {
-        bridgeQueue = new LinkedList<>();
+        bridgeMap = new HashMap<>();
         mapArrayList = new ArrayList<>();
+        yIndex = 0;
     }
 
     public boolean makeCell(String cellLine) {
         CellService currentCell;
         Direction currentDirection;
-
         String[] splitLine = cellLine.split(" ");
         StringBuilder computedLine = new StringBuilder();
         for (String s : splitLine) computedLine.append(s);
@@ -33,6 +35,18 @@ public class BridgeMap {
             previousDirection = Direction.getDirectionByChar(line[1]);
             return true;
         }
+
+        if(line.length > 1){
+            currentDirection = Direction.getDirectionByChar(line[1]);
+            if (previousDirection.opposite() != currentDirection) return false;
+            switch (currentDirection){
+                case UP-> yIndex--;
+                case DOWN -> yIndex++;
+            }
+        } else {
+            currentDirection = previousDirection;
+        }
+
         switch (line[0]) {
             case 'C' -> {
                 currentCell = new Cell();
@@ -41,14 +55,15 @@ public class BridgeMap {
             case 'B' -> {
                 currentCell = new BridgeCell(true);
                 mapArrayList.add(currentCell);
-                bridgeQueue.add((BridgeCell) currentCell);
+                bridgeMap.put(yIndex, currentCell);
             }
             case 'b' -> {
-                if (bridgeQueue.isEmpty()) return false;
+                if (bridgeMap.isEmpty()) return false;
                 currentCell = new BridgeCell(false);
                 mapArrayList.add(currentCell);
-                currentCell.connectCell(Direction.LEFT, bridgeQueue.peek());
-                bridgeQueue.poll().connectCell(Direction.RIGHT, currentCell);
+                currentCell.connectCell(Direction.LEFT, bridgeMap.get(yIndex));
+                bridgeMap.get(yIndex).connectCell(Direction.RIGHT, currentCell);
+                bridgeMap.remove(yIndex);
             }
             case 'H' -> {
                 currentCell = new CardCell(Card.HAMMER);
@@ -73,11 +88,8 @@ public class BridgeMap {
             }
         }
 
-        currentDirection = Direction.getDirectionByChar(line[1]);
-        if (previousDirection.opposite() != currentDirection) return false;
         currentCell.connectCell(currentDirection, previousCell);
         previousCell.connectCell(previousDirection, currentCell);
-
         previousCell = currentCell;
         previousDirection = Direction.getDirectionByChar(line[2]);
         return true;

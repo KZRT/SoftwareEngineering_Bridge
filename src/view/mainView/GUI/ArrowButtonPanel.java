@@ -1,4 +1,4 @@
-package view.mainView;
+package view.mainView.GUI;
 
 import controller.GameController;
 
@@ -13,11 +13,9 @@ public class ArrowButtonPanel extends JPanel {
     private JButton leftButton;
     private JButton rightButton;
     private GridBagConstraints gridBagConstraints;
-    private GameController gameController;
 
     public ArrowButtonPanel(GameController gameController) {
         super();
-        this.gameController = gameController;
         this.setLayout(new GridBagLayout());
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.weightx = 1.;

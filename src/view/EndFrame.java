@@ -19,13 +19,13 @@ public class EndFrame extends JFrame {
         label.setBounds(100, 100, 200, 50);
         add(label);
         for(int i = 0; i < playerScores.size(); i++){
-            JLabel playerLabel = new JLabel("Player " + (i+1) + ": " + playerScores.get(i));
+            JLabel playerLabel = new JLabel("Player " + i + ": " + playerScores.get(i));
             playerLabel.setBounds(100, 150 + (i * 50), 200, 50);
             add(playerLabel);
             if(playerScores.get(i) == maxScore){
                 JLabel wonLabel = new JLabel("Won!");
-                wonLabel.setForeground(Color.YELLOW);
-                wonLabel.setBounds(350, 150 + (i * 50), 200, 50);
+                wonLabel.setForeground(Color.RED);
+                wonLabel.setBounds(300, 150 + (i * 50), 100, 50);
                 add(wonLabel);
             }
         }

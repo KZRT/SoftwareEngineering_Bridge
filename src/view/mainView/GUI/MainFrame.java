@@ -1,16 +1,17 @@
-package view.mainView;
+package view.mainView.GUI;
 
 import controller.GameController;
 import model.GameManager;
 import model.Player;
+import view.mainView.MainView;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements MainView {
     private GameManager gameManager;
     private GameController gameController;
-    private MapView mapView;
+    private MapPanel mapPanel;
     private BottomPanel bottomPanel;
     private InventoryPanel inventoryPanel;
     private JLabel upperLabel;
@@ -18,42 +19,46 @@ public class MainFrame extends JFrame {
     public MainFrame(GameManager gameManager, GameController gameController) {
         this.gameManager = gameManager;
         this.gameController = gameController;
-        this.mapView = new MapView(gameManager);
+        gameManager.registerObserver(this);
+
+        this.mapPanel = new MapPanel(gameManager);
         this.upperLabel = new JLabel();
-        Player player = gameManager.getCurrentPlayer();
-        this.inventoryPanel = new InventoryPanel(player.getCards());
+        upperLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        this.inventoryPanel = new InventoryPanel(gameManager.getPlayers());
         this.bottomPanel = new BottomPanel(gameController);
         this.setTitle("Bridge");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        mapView.printMap();
-        Dimension preferredSize = mapView.getPreferredSize();
+        mapPanel.printMap();
+        Dimension preferredSize = mapPanel.getPreferredSize();
         preferredSize.height += bottomPanel.getPreferredSize().height;
         preferredSize.width += inventoryPanel.getPreferredSize().width;
         this.setPreferredSize(preferredSize);
 
+        Player player = gameManager.getCurrentPlayer();
         upperLabel.setText(player.getId() + ": " + gameManager.getMoves() + " moves");
 
         this.setLayout(new BorderLayout());
         this.add(upperLabel, BorderLayout.NORTH);
-        this.add(mapView, BorderLayout.CENTER);
+        this.add(mapPanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
         this.add(inventoryPanel, BorderLayout.EAST);
-        System.out.println(inventoryPanel.getPreferredSize());
         this.setLocationRelativeTo(null);
         this.pack();
         this.setVisible(true);
     }
 
+    @Override
     public void update() {
-        mapView.printMap();
+        mapPanel.printMap();
         Player player = gameManager.getCurrentPlayer();
-        inventoryPanel.update(player.getCards());
-        upperLabel.setText(player.getId() + ": " + gameManager.getMoves() + " moves");
+        inventoryPanel.update(gameManager.getPlayers());
+        upperLabel.setText("Player " + player.getId() + ": " + gameManager.getMoves() + " moves");
+        this.repaint();
     }
 
+    @Override
     public void alertMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
-
 }
