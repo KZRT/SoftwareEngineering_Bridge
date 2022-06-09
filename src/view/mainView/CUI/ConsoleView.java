@@ -111,8 +111,7 @@ public class ConsoleView extends Thread implements MainView {
     public void run() {
         update();
         while (true) {
-            System.out.println("Player " + gameManager.getCurrentPlayer().getId() + "'s turn, Move:  " + gameManager.getMoves());
-            System.out.println("Enter command (ROLL for roll, REST for rest turn, U D L R for move): ");
+
             Scanner scanner = new Scanner(System.in);
             String command = scanner.nextLine();
             switch (command) {
@@ -212,6 +211,8 @@ public class ConsoleView extends Thread implements MainView {
             }
             System.out.println();
         }
+        System.out.println("Player " + gameManager.getCurrentPlayer().getId() + "'s turn, Move:  " + gameManager.getMoves());
+        System.out.print("Enter command (ROLL for roll, REST for rest turn, U D L R for move): ");
     }
 
     @Override
