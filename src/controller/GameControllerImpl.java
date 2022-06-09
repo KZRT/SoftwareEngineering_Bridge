@@ -9,13 +9,14 @@ import view.startView.StartView;
 import java.util.ArrayList;
 
 public class GameControllerImpl implements GameController {
+    private static GameControllerImpl gameController;
     private final GameManager gameManager;
     private final StartView startView;
     private MainView mainView;
 //    private MainView test;
 //    private MainView test2;
 
-    public GameControllerImpl(GameManager gameManager) {
+    private GameControllerImpl(GameManager gameManager) {
         this.gameManager = gameManager;
         this.startView = new StartView(this);
     }
@@ -127,5 +128,12 @@ public class GameControllerImpl implements GameController {
         }
 //        test = SimpleMainViewFactory.createMainView(gameManager, this, "CUI");
 //        test2 = SimpleMainViewFactory.createMainView(gameManager, this, "GUI");
+    }
+
+    public synchronized static GameControllerImpl getInstance(GameManager gameManager) {
+        if (gameController == null) {
+            gameController = new GameControllerImpl(gameManager);
+        }
+        return gameController;
     }
 }
