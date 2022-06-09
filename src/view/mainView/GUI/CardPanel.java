@@ -8,22 +8,23 @@ import java.util.ArrayList;
 
 public class CardPanel extends JPanel {
     private int maxCards;
-    public CardPanel(){
+
+    public CardPanel() {
         this.setLayout(new GridLayout(2, 4));
         maxCards = 4;
         this.setPreferredSize(new Dimension(100, 200));
     }
 
-    public void updateCard(ArrayList<Card> cards){
+    public void updateCard(ArrayList<Card> cards) {
         this.removeAll();
-        if(cards.size() > (maxCards * 2)){
+        if (cards.size() > (maxCards * 2)) {
             this.setLayout(new GridLayout(maxCards, 4));
             maxCards *= 2;
             this.setPreferredSize(new Dimension(100, 50 * maxCards));
         }
-        for (Card card: cards){
+        for (Card card : cards) {
             CellPanel cellPanel = new CellPanel();
-            switch (card){
+            switch (card) {
                 case BRIDGE -> {
                     cellPanel.setCellImage("Bridge");
                 }

@@ -4,14 +4,12 @@ import model.cell.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class BridgeMap {
-    private CellService previousCell;
-    private Direction previousDirection;
     private final ArrayList<CellService> mapArrayList;
     private final HashMap<Integer, CellService> bridgeMap;
+    private CellService previousCell;
+    private Direction previousDirection;
     private int yIndex;
 
     public BridgeMap() {
@@ -36,11 +34,11 @@ public class BridgeMap {
             return true;
         }
 
-        if(line.length > 1){
+        if (line.length > 1) {
             currentDirection = Direction.getDirectionByChar(line[1]);
             if (previousDirection.opposite() != currentDirection) return false;
-            switch (currentDirection){
-                case UP-> yIndex--;
+            switch (currentDirection) {
+                case UP -> yIndex--;
                 case DOWN -> yIndex++;
             }
         } else {

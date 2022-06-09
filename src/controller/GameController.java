@@ -1,11 +1,17 @@
 package controller;
 
 public interface GameController {
-    public void moveUp();
-    public void moveDown();
-    public void moveLeft();
-    public void moveRight();
-    public void rollDice();
-    public void restTurn();
-    public void startGame(int playerCount, String inputFileName, boolean isGUI);
+    void moveUp();
+
+    void moveDown();
+
+    void moveLeft();
+
+    void moveRight();
+
+    void rollDice();
+
+    void restTurn();
+
+    void startGame(int playerCount, String inputFileName, boolean isGUI);
 }

@@ -9,7 +9,7 @@ import java.util.Map;
 public class Cell implements CellService {
     private final Map<Direction, CellService> connectedCells;
 
-    public Cell(){
+    public Cell() {
         connectedCells = new EnumMap<>(Direction.class);
     }
 
@@ -39,7 +39,7 @@ public class Cell implements CellService {
     }
 
     @Override
-    public Card getCard(){
+    public Card getCard() {
         throw new NullPointerException("No Card");
     }
 

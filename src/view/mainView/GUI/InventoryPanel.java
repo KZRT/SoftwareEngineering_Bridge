@@ -7,13 +7,14 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class InventoryPanel extends JPanel {
-    private ArrayList<CardPanel> cardViews;
+    private final ArrayList<CardPanel> cardViews;
+
     public InventoryPanel(ArrayList<Player> players) {
         super();
         cardViews = new ArrayList<>();
         this.setLayout(new GridLayout(players.size() * 2, 1));
         this.setPreferredSize(new Dimension(100, 800));
-        for(Player player: players){
+        for (Player player : players) {
             JPanel playerPanel = new JPanel();
             playerPanel.setLayout(new BorderLayout());
             playerPanel.setPreferredSize(new Dimension(100, 200));
@@ -30,8 +31,8 @@ public class InventoryPanel extends JPanel {
 
     }
 
-    public void update(ArrayList<Player> players){
-        for(CardPanel cardPanel : cardViews){
+    public void update(ArrayList<Player> players) {
+        for (CardPanel cardPanel : cardViews) {
             cardPanel.updateCard(players.get(cardViews.indexOf(cardPanel)).getCards());
         }
 

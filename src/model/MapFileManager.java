@@ -2,14 +2,15 @@ package model;
 
 import model.cell.*;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
 public class MapFileManager {
-    private BridgeMap bridgeMap;
+    private final BridgeMap bridgeMap;
     private String mapFileName;
     private String outputMapFileName;
 
@@ -67,20 +68,20 @@ public class MapFileManager {
                         case HAMMER -> line += "H ";
                         case SAW -> line += "S ";
                     }
-                } else if (cell instanceof BridgeCell){
+                } else if (cell instanceof BridgeCell) {
                     line += cell.isBridge() ? "B " : "b ";
                 } else line += "C ";
 
                 Direction tempDirection = null;
-                for (Direction d : Direction.values()){
-                    if(cell.canMove(d)){
-                        if(previousDirection == d.opposite()){
+                for (Direction d : Direction.values()) {
+                    if (cell.canMove(d)) {
+                        if (previousDirection == d.opposite()) {
                             line += d.getFileChar() + " ";
-                        } else if(cell instanceof BridgeCell && (d == Direction.LEFT || d == Direction.RIGHT)){
+                        } else if (cell instanceof BridgeCell && (d == Direction.LEFT || d == Direction.RIGHT)) {
                         } else tempDirection = d;
                     }
                 }
-                line +=  tempDirection.getFileChar() + "\n";
+                line += tempDirection.getFileChar() + "\n";
                 previousDirection = tempDirection;
             }
             try {
@@ -95,9 +96,11 @@ public class MapFileManager {
             e.printStackTrace();
         }
     }
-    public void setInputMapFileName(String inputMapFileName){
+
+    public void setInputMapFileName(String inputMapFileName) {
         this.mapFileName = inputMapFileName;
     }
+
     public void setOutputMapFileName(String outputMapFileName) {
         this.outputMapFileName = outputMapFileName;
     }

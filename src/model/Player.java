@@ -4,69 +4,60 @@ import model.cell.CellService;
 
 import java.util.ArrayList;
 
-public class Player{
+public class Player {
     private final int id;
-    private CellService currentCell;
     private final ArrayList<Card> cards;
+    private CellService currentCell;
     private boolean hasWon;
     private int score;
 
-    public Player(int id){
+    public Player(int id) {
         this.id = id;
         this.hasWon = false;
         this.cards = new ArrayList<>();
         this.score = 0;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public CellService getCurrentCell(){
+    public CellService getCurrentCell() {
         return currentCell;
     }
 
-    public void setCurrentCell(CellService currentCell){
+    public void setCurrentCell(CellService currentCell) {
         this.currentCell = currentCell;
     }
 
-    public int getCardScore(){
-        for(Card card : cards){
-            score += card.getValue();
-        }
+    public int getCardScore() {
         return score;
     }
 
-    public void setCard(Card card){
+    public void setCard(Card card) {
         this.cards.add(card);
+        this.score += card.getValue();
     }
 
-    public boolean hasWon(){
+    public boolean hasWon() {
         return hasWon;
     }
 
-    public void setWon(int countPlayerWon){
-        switch (countPlayerWon){
-            case 0->{
-                score += 7;
-            }
-            case 1->{
-                score += 3;
-            }
-            case 2->{
-                score += 1;
-            }
-            default -> {
-                score += 0;
-            }
+    public void setWon(int countPlayerWon) {
+        switch (countPlayerWon) {
+            case 0 -> score += 7;
+
+            case 1 -> score += 3;
+
+            case 2 -> score += 1;
         }
         this.hasWon = true;
     }
 
-    public int getBridgeCount(){
+    public int getBridgeCount() {
         int bridgeCount = 0;
-        for(Card card : cards){
-            if(card == Card.BRIDGE){
+        for (Card card : cards) {
+            if (card == Card.BRIDGE) {
                 bridgeCount++;
             }
         }
@@ -77,9 +68,9 @@ public class Player{
         return cards;
     }
 
-    public boolean hasBridge(){
-        for(Card card : cards){
-            if(card == Card.BRIDGE){
+    public boolean hasBridge() {
+        for (Card card : cards) {
+            if (card == Card.BRIDGE) {
                 return true;
             }
         }

@@ -18,17 +18,19 @@ public class EndFrame extends JFrame {
         JLabel label = new JLabel("Game Over");
         label.setBounds(100, 100, 200, 50);
         add(label);
-        for(int i = 0; i < playerScores.size(); i++){
+
+        for (int i = 0; i < playerScores.size(); i++) {
             JLabel playerLabel = new JLabel("Player " + i + ": " + playerScores.get(i));
             playerLabel.setBounds(100, 150 + (i * 50), 200, 50);
             add(playerLabel);
-            if(playerScores.get(i) == maxScore){
+            if (playerScores.get(i) == maxScore) {
                 JLabel wonLabel = new JLabel("Won!");
                 wonLabel.setForeground(Color.RED);
                 wonLabel.setBounds(300, 150 + (i * 50), 100, 50);
                 add(wonLabel);
             }
         }
+
         this.setVisible(true);
     }
 }

@@ -5,7 +5,7 @@ import model.Direction;
 
 public class EndCell implements CellService {
 
-    public EndCell(){
+    public EndCell() {
     }
 
     @Override
@@ -34,7 +34,7 @@ public class EndCell implements CellService {
     }
 
     @Override
-    public Card getCard(){
+    public Card getCard() {
         throw new NullPointerException("No Card");
     }
 

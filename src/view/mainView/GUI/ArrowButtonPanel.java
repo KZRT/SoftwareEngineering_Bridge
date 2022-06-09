@@ -4,15 +4,13 @@ import controller.GameController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ArrowButtonPanel extends JPanel {
-    private JButton upButton;
-    private JButton downButton;
-    private JButton leftButton;
-    private JButton rightButton;
-    private GridBagConstraints gridBagConstraints;
+    private final JButton upButton;
+    private final JButton downButton;
+    private final JButton leftButton;
+    private final JButton rightButton;
+    private final GridBagConstraints gridBagConstraints;
 
     public ArrowButtonPanel(GameController gameController) {
         super();

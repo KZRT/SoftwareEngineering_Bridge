@@ -1,6 +1,8 @@
 package view.mainView.GUI;
 
-import model.*;
+import model.Direction;
+import model.GameManager;
+import model.Player;
 import model.cell.BridgeCell;
 import model.cell.CardCell;
 import model.cell.CellService;
@@ -12,13 +14,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapPanel extends JPanel {
-    private GameManager gameManager;
     public static final int CELL_SIZE = 50;
-    private HashMap<CellService, Index> cellIndexMap;
-    private ArrayList<Index> bridgeIndexes;
+    private final GameManager gameManager;
+    private final HashMap<CellService, Index> cellIndexMap;
+    private final ArrayList<Index> bridgeIndexes;
     private int minRow, minCol, maxRow, maxCol;
-    private Dimension mapSize;
-    private ArrayList<ArrayList<CellPanel>> gridCellViews;
+    private final Dimension mapSize;
+    private final ArrayList<ArrayList<CellPanel>> gridCellViews;
 
     public MapPanel(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -32,32 +34,32 @@ public class MapPanel extends JPanel {
         minCol = 0;
         int currentRow = 1, currentCol = 1;
         Direction previousDirection = null;
-        for(CellService cell: cells){
+        for (CellService cell : cells) {
             Direction tempDirection = null;
-            if(cell.getClass().getSimpleName().equals("EndCell")){
+            if (cell.getClass().getSimpleName().equals("EndCell")) {
                 tempDirection = previousDirection;
-            } else if(cell.getClass().getSimpleName().equals("StartCell")){
-                for(Direction d : Direction.values()){
-                    if(cell.canMove(d)){
+            } else if (cell.getClass().getSimpleName().equals("StartCell")) {
+                for (Direction d : Direction.values()) {
+                    if (cell.canMove(d)) {
                         previousDirection = d;
                     }
                 }
                 cellIndexMap.put(cell, new Index(currentRow, currentCol));
                 continue;
-            }else {
-                for (Direction d : Direction.values()){
-                    if(cell.canMove(d)){
-                        if(previousDirection == d.opposite()){
-                        } else if(cell instanceof BridgeCell && (d == Direction.LEFT || d == Direction.RIGHT)){
+            } else {
+                for (Direction d : Direction.values()) {
+                    if (cell.canMove(d)) {
+                        if (previousDirection == d.opposite()) {
+                        } else if (cell instanceof BridgeCell && (d == Direction.LEFT || d == Direction.RIGHT)) {
                         } else tempDirection = d;
                     }
                 }
             }
-            if(tempDirection == null){
-                if(cell.getClass().getSimpleName().equals("BridgeCell")){
-                    if(cell.isBridge() && cell.canMove(Direction.LEFT)){
+            if (tempDirection == null) {
+                if (cell.getClass().getSimpleName().equals("BridgeCell")) {
+                    if (cell.isBridge() && cell.canMove(Direction.LEFT)) {
                         tempDirection = Direction.LEFT;
-                    } else if(!cell.isBridge() && cell.canMove(Direction.RIGHT)){
+                    } else if (!cell.isBridge() && cell.canMove(Direction.RIGHT)) {
                         tempDirection = Direction.RIGHT;
                     } else {
                         tempDirection = previousDirection;
@@ -66,7 +68,7 @@ public class MapPanel extends JPanel {
                     continue;
                 }
             }
-            switch (previousDirection){
+            switch (previousDirection) {
                 case LEFT -> {
                     currentCol--;
                     minCol = Math.min(minCol, currentCol);
@@ -91,9 +93,9 @@ public class MapPanel extends JPanel {
         this.mapSize = new Dimension((maxCol - minCol + 2) * CELL_SIZE, (maxRow - minRow + 2) * CELL_SIZE);
         this.setPreferredSize(mapSize);
 
-        for(int i = 0; i < maxRow - minRow + 2; i++){
+        for (int i = 0; i < maxRow - minRow + 2; i++) {
             ArrayList<CellPanel> row = new ArrayList<>();
-            for(int j = 0; j < maxCol - minCol + 2; j++){
+            for (int j = 0; j < maxCol - minCol + 2; j++) {
                 CellPanel cellPanel = new CellPanel();
                 cellPanel.setCellColor(Color.WHITE);
                 this.add(cellPanel);
@@ -104,7 +106,7 @@ public class MapPanel extends JPanel {
     }
 
     public void printMap() {
-        for(CellService cell : gameManager.getBridgeMap()){
+        for (CellService cell : gameManager.getBridgeMap()) {
             Index currentCellIndex = cellIndexMap.get(cell);
             CellPanel cellPanel = gridCellViews.get(currentCellIndex.getRow() - minRow).get(currentCellIndex.getCol() - minCol);
             cellPanel.deletePlayer();
@@ -116,10 +118,10 @@ public class MapPanel extends JPanel {
                     cellPanel.add(new JLabel("S"));
                 }
                 case "BridgeCell" -> {
-                    if(cell.isBridge()){
+                    if (cell.isBridge()) {
                         cellPanel.setCellImage("Bridge");
                         Index connectedBridge = cellIndexMap.get(cell.moveBridge());
-                        for(int col = currentCellIndex.getCol() + 1; col < connectedBridge.getCol(); col++){
+                        for (int col = currentCellIndex.getCol() + 1; col < connectedBridge.getCol(); col++) {
                             bridgeIndexes.add(new Index(currentCellIndex.getRow(), col));
                         }
                     } else {
@@ -127,8 +129,8 @@ public class MapPanel extends JPanel {
                     }
                 }
                 case "CardCell" -> {
-                    if(cell.isCard()){
-                        switch (cell.getCard()){
+                    if (cell.isCard()) {
+                        switch (cell.getCard()) {
                             case PHILIPS_DRIVER -> {
                                 cellPanel.setCellImage("Philips");
                             }
@@ -139,7 +141,7 @@ public class MapPanel extends JPanel {
                                 cellPanel.setCellImage("Hammer");
                             }
                         }
-                        ((CardCell)cell).setCard(true);
+                        ((CardCell) cell).setCard(true);
                     } else {
                         cellPanel.deleteGraphics();
                         cellPanel.setCellColor(new Color(0xfae39a));
@@ -154,13 +156,13 @@ public class MapPanel extends JPanel {
                     cellPanel.setCellColor(new Color(0xfae39a));
                 }
             }
-            for(Player player: gameManager.getPlayers()){
-                if(player.getCurrentCell() == cell){
+            for (Player player : gameManager.getPlayers()) {
+                if (player.getCurrentCell() == cell) {
                     cellPanel.setPlayer(player.getId());
                 }
             }
         }
-        for(Index index : bridgeIndexes){
+        for (Index index : bridgeIndexes) {
             CellPanel cellPanel = gridCellViews.get(index.getRow() - minRow).get(index.getCol() - minCol);
             cellPanel.setBorder();
             cellPanel.setCellColor(Color.WHITE);

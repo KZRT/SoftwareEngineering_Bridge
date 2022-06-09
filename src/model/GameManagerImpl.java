@@ -7,17 +7,17 @@ import java.util.ArrayList;
 
 public class GameManagerImpl implements GameManager {
     private static GameManagerImpl gameManager;
-    private ArrayList<Player> players;
     private final MapFileManager mapFileManager;
+    private final ArrayList<Player> players;
     private BridgeMap bridgeMap;
     private int playerTurn;
     private int countPlayerWon;
-    private Dice dice;
+    private final Dice dice;
     private Direction previousDirection;
     private boolean diceRolled;
     private Player currentPlayer;
     private int currentPlayerRoll;
-    private ArrayList<MainView> mainViews;
+    private final ArrayList<MainView> mainViews;
 
     private GameManagerImpl() {
         this.players = new ArrayList<>();
@@ -25,6 +25,13 @@ public class GameManagerImpl implements GameManager {
         this.mainViews = new ArrayList<>();
         playerTurn = 0;
         this.dice = new Dice();
+    }
+
+    public synchronized static GameManagerImpl getInstance() {
+        if (gameManager == null) {
+            gameManager = new GameManagerImpl();
+        }
+        return gameManager;
     }
 
     @Override
@@ -187,12 +194,5 @@ public class GameManagerImpl implements GameManager {
         for (MainView mainView : mainViews) {
             mainView.update();
         }
-    }
-
-    public synchronized static GameManagerImpl getInstance() {
-        if (gameManager == null) {
-            gameManager = new GameManagerImpl();
-        }
-        return gameManager;
     }
 }

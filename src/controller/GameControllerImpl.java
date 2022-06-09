@@ -2,7 +2,6 @@ package controller;
 
 import model.GameManager;
 import view.EndFrame;
-import view.mainView.GUI.MainFrame;
 import view.mainView.MainView;
 import view.mainView.SimpleMainViewFactory;
 import view.startView.StartView;
@@ -11,9 +10,10 @@ import java.util.ArrayList;
 
 public class GameControllerImpl implements GameController {
     private final GameManager gameManager;
-    private StartView startView;
+    private final StartView startView;
     private MainView mainView;
-    private MainView test;
+//    private MainView test;
+
     public GameControllerImpl(GameManager gameManager) {
         this.gameManager = gameManager;
         this.startView = new StartView(this);
@@ -21,13 +21,13 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void moveUp() {
-        if(gameManager.getMoves() == 0){
+        if (gameManager.getMoves() == 0) {
             mainView.alertMessage("Roll Dice First!");
             return;
         }
         try {
             if (!gameManager.movePlayer('U')) {
-                if(gameManager.endTurn()){
+                if (gameManager.endTurn()) {
                     ArrayList<Integer> playerScores = gameManager.endGame();
                     EndFrame endFrame = new EndFrame(playerScores);
                 }
@@ -39,13 +39,13 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void moveDown() {
-        if(gameManager.getMoves() == 0){
+        if (gameManager.getMoves() == 0) {
             mainView.alertMessage("Roll Dice First!");
             return;
         }
         try {
             if (!gameManager.movePlayer('D')) {
-                if(gameManager.endTurn()){
+                if (gameManager.endTurn()) {
                     ArrayList<Integer> playerScores = gameManager.endGame();
                     EndFrame endFrame = new EndFrame(playerScores);
                 }
@@ -57,13 +57,13 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void moveLeft() {
-        if(gameManager.getMoves() == 0){
+        if (gameManager.getMoves() == 0) {
             mainView.alertMessage("Roll Dice First!");
             return;
         }
         try {
             if (!gameManager.movePlayer('L')) {
-                if(gameManager.endTurn()){
+                if (gameManager.endTurn()) {
                     ArrayList<Integer> playerScores = gameManager.endGame();
                     EndFrame endFrame = new EndFrame(playerScores);
                 }
@@ -75,13 +75,13 @@ public class GameControllerImpl implements GameController {
 
     @Override
     public void moveRight() {
-        if(gameManager.getMoves() == 0){
+        if (gameManager.getMoves() == 0) {
             mainView.alertMessage("Roll Dice First!");
             return;
         }
         try {
             if (!gameManager.movePlayer('R')) {
-                if(gameManager.endTurn()){
+                if (gameManager.endTurn()) {
                     ArrayList<Integer> playerScores = gameManager.endGame();
                     EndFrame endFrame = new EndFrame(playerScores);
                 }
@@ -119,11 +119,11 @@ public class GameControllerImpl implements GameController {
     public void startGame(int playerCount, String inputFileName, boolean isGUI) {
         gameManager.initialize(playerCount, "./resources/maps/" + inputFileName);
         startView.dispose();
-        if(isGUI){
+        if (isGUI) {
             mainView = SimpleMainViewFactory.createMainView(gameManager, this, "GUI");
         } else {
             mainView = SimpleMainViewFactory.createMainView(gameManager, this, "CUI");
         }
-        test = SimpleMainViewFactory.createMainView(gameManager, this, "CUI");
+//        test = SimpleMainViewFactory.createMainView(gameManager, this, "CUI");
     }
 }

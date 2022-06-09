@@ -11,11 +11,11 @@ public class BridgeCell implements CellService {
     private final Map<Direction, CellService> connectedCells;
     private boolean isStartOfBridge;
 
-    public BridgeCell(){
+    public BridgeCell() {
         connectedCells = new EnumMap<>(Direction.class);
     }
 
-    public BridgeCell(boolean isStartOfBridge){
+    public BridgeCell(boolean isStartOfBridge) {
         connectedCells = new HashMap<>();
         this.isStartOfBridge = isStartOfBridge;
     }
@@ -46,7 +46,7 @@ public class BridgeCell implements CellService {
     }
 
     @Override
-    public Card getCard(){
+    public Card getCard() {
         throw new NullPointerException("No Card");
     }
 

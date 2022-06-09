@@ -4,11 +4,17 @@ import model.Card;
 import model.Direction;
 
 public interface CellService {
-    public boolean canMove(Direction direction);
-    public CellService move(Direction direction);
-    public boolean isBridge();
-    public CellService moveBridge();
-    public boolean isCard();
-    public Card getCard();
-    public void connectCell(Direction direction, CellService cell);
+    boolean canMove(Direction direction);
+
+    CellService move(Direction direction);
+
+    boolean isBridge();
+
+    CellService moveBridge();
+
+    boolean isCard();
+
+    Card getCard();
+
+    void connectCell(Direction direction, CellService cell);
 }

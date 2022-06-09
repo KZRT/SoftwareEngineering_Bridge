@@ -4,7 +4,7 @@ import model.GameManager;
 import model.GameManagerImpl;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         GameManager gameManager = GameManagerImpl.getInstance();
         GameController gameController = new GameControllerImpl(gameManager);
     }

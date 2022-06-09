@@ -1,6 +1,7 @@
 package view.mainView;
 
 public interface MainView {
-    public void update();
-    public void alertMessage(String message);
+    void update();
+
+    void alertMessage(String message);
 }

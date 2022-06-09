@@ -9,12 +9,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame implements MainView {
-    private GameManager gameManager;
-    private GameController gameController;
-    private MapPanel mapPanel;
-    private BottomPanel bottomPanel;
-    private InventoryPanel inventoryPanel;
-    private JLabel upperLabel;
+    private final GameManager gameManager;
+    private final GameController gameController;
+    private final MapPanel mapPanel;
+    private final BottomPanel bottomPanel;
+    private final InventoryPanel inventoryPanel;
+    private final JLabel upperLabel;
 
     public MainFrame(GameManager gameManager, GameController gameController) {
         this.gameManager = gameManager;
@@ -35,15 +35,13 @@ public class MainFrame extends JFrame implements MainView {
         preferredSize.width += inventoryPanel.getPreferredSize().width;
         this.setPreferredSize(preferredSize);
 
-        Player player = gameManager.getCurrentPlayer();
-        upperLabel.setText(player.getId() + ": " + gameManager.getMoves() + " moves");
-
         this.setLayout(new BorderLayout());
         this.add(upperLabel, BorderLayout.NORTH);
         this.add(mapPanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
         this.add(inventoryPanel, BorderLayout.EAST);
         this.setLocationRelativeTo(null);
+        update();
         this.pack();
         this.setVisible(true);
     }
@@ -53,7 +51,7 @@ public class MainFrame extends JFrame implements MainView {
         mapPanel.printMap();
         Player player = gameManager.getCurrentPlayer();
         inventoryPanel.update(gameManager.getPlayers());
-        upperLabel.setText("Player " + player.getId() + ": " + gameManager.getMoves() + " moves");
+        upperLabel.setText("Player " + player.getId() + ": " + gameManager.getMoves() + " moves / Score: " + player.getCardScore());
         this.repaint();
     }
 

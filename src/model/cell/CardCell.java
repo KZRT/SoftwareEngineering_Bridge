@@ -11,12 +11,12 @@ public class CardCell implements CellService {
     private Card card;
     private boolean hasCard;
 
-    public CardCell(){
+    public CardCell() {
         connectedCells = new EnumMap<>(Direction.class);
         this.hasCard = false;
     }
 
-    public CardCell(Card card){
+    public CardCell(Card card) {
         connectedCells = new EnumMap<>(Direction.class);
         this.card = card;
         this.hasCard = true;
@@ -48,17 +48,17 @@ public class CardCell implements CellService {
     }
 
     @Override
-    public Card getCard(){
+    public Card getCard() {
         this.hasCard = false;
         return card;
+    }
+
+    public void setCard(boolean hasCard) {
+        this.hasCard = hasCard;
     }
 
     @Override
     public void connectCell(Direction direction, CellService cell) {
         connectedCells.put(direction, cell);
-    }
-
-    public void setCard(boolean hasCard){
-        this.hasCard = hasCard;
     }
 }

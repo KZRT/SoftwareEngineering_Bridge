@@ -10,17 +10,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-public class StartView extends JFrame{
-    private GameController gameController;
+public class StartView extends JFrame {
+    private final GameController gameController;
 
-    private JPanel centerPanel;
-    private JPanel bottomPanel;
-    private JComboBox<String> mapFileComboBox;
-    private JComboBox<Integer> playerCountComboBox;
+    private final JPanel centerPanel;
+    private final JPanel bottomPanel;
+    private final JComboBox<String> mapFileComboBox;
+    private final JComboBox<Integer> playerCountComboBox;
 
-    private JButton GUIButton;
-    private JButton CUIButton;
-    private JButton exitButton;
+    private final JButton GUIButton;
+    private final JButton CUIButton;
+    private final JButton exitButton;
 
 
     public StartView(GameController gameController) {
