@@ -122,6 +122,7 @@ public class GameManagerImpl implements GameManager {
 
         if (currentCell.getClass().getSimpleName().equals("EndCell")) {
             currentPlayer.setWon(countPlayerWon++);
+            alertObservers("Player " + currentPlayer.getId() + " has Finished!");
             return false;
         }
         previousDirection = direction;
@@ -193,6 +194,12 @@ public class GameManagerImpl implements GameManager {
     private void notifyObservers() {
         for (MainView mainView : mainViews) {
             mainView.update();
+        }
+    }
+
+    private void alertObservers(String message) {
+        for (MainView mainView : mainViews) {
+            mainView.alertMessage(message);
         }
     }
 }

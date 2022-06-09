@@ -13,6 +13,7 @@ public class GameControllerImpl implements GameController {
     private final StartView startView;
     private MainView mainView;
 //    private MainView test;
+//    private MainView test2;
 
     public GameControllerImpl(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -125,5 +126,6 @@ public class GameControllerImpl implements GameController {
             mainView = SimpleMainViewFactory.createMainView(gameManager, this, "CUI");
         }
 //        test = SimpleMainViewFactory.createMainView(gameManager, this, "CUI");
+//        test2 = SimpleMainViewFactory.createMainView(gameManager, this, "GUI");
     }
 }
