@@ -75,7 +75,6 @@ public class GameManagerImpl implements GameManager {
         }
         diceRolled = true;
         this.currentPlayerRoll = dice.roll() - getCurrentPlayer().getBridgeCount();
-        currentPlayerRoll = 10;
         notifyObservers();
         return currentPlayerRoll > 0;
     }
