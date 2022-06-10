@@ -97,17 +97,17 @@ public class MapFileManager {
         }
     }
 
+    public void printCurrentMap(String outputMapFileName) {
+        this.outputMapFileName = outputMapFileName;
+        printCurrentMap();
+    }
+
     public void setInputMapFileName(String inputMapFileName) {
         this.mapFileName = inputMapFileName;
     }
 
     public void setOutputMapFileName(String outputMapFileName) {
         this.outputMapFileName = outputMapFileName;
-    }
-
-    public void printCurrentMap(String outputMapFileName) {
-        this.outputMapFileName = outputMapFileName;
-        printCurrentMap();
     }
 
     public BridgeMap getBridgeMap() {
