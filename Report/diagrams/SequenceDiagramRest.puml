@@ -1,0 +1,13 @@
+@startuml
+actor Player
+Player -> System: restTurn()
+alt player has no bridge Card
+    return response: no bridgeCard
+else player already rolled dice
+    System --> Player: response: already rolled
+else else
+    System->System: removeBridgeCard(Player)
+    System->System: endTurn()
+    System-->Player:nextPlayer
+    end
+@enduml

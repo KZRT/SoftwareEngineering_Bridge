@@ -3,7 +3,6 @@ package controller;
 import model.GameManager;
 import view.EndFrame;
 import view.mainView.MainView;
-import view.mainView.SimpleMainViewFactory;
 import view.startView.StartView;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class GameControllerImpl implements GameController {
     private final GameManager gameManager;
     private final StartView startView;
     private MainView mainView;
-//    private MainView test;
+    private MainView test;
 //    private MainView test2;
 
     private GameControllerImpl(GameManager gameManager) {
@@ -126,7 +125,7 @@ public class GameControllerImpl implements GameController {
         } else {
             mainView = SimpleMainViewFactory.createMainView(gameManager, this, "CUI");
         }
-//        test = SimpleMainViewFactory.createMainView(gameManager, this, "CUI");
+        test = SimpleMainViewFactory.createMainView(gameManager, this, "CUI");
 //        test2 = SimpleMainViewFactory.createMainView(gameManager, this, "GUI");
     }
 

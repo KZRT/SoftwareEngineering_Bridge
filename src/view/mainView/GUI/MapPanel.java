@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class MapPanel extends JPanel {
     public static final int CELL_SIZE = 50;
@@ -27,14 +28,15 @@ public class MapPanel extends JPanel {
         this.cellIndexMap = new HashMap<>();
         this.bridgeIndexes = new ArrayList<>();
         this.gridCellViews = new ArrayList<>();
-        ArrayList<CellService> cells = gameManager.getBridgeMap();
+        Iterator<CellService> cells = gameManager.getBridgeMapIterator();
         maxRow = 0;
         maxCol = 0;
         minRow = 0;
         minCol = 0;
         int currentRow = 1, currentCol = 1;
         Direction previousDirection = null;
-        for (CellService cell : cells) {
+        while (cells.hasNext()) {
+            CellService cell = cells.next();
             Direction tempDirection = null;
             if (cell.getClass().getSimpleName().equals("EndCell")) {
                 tempDirection = previousDirection;
@@ -106,7 +108,9 @@ public class MapPanel extends JPanel {
     }
 
     public void printMap() {
-        for (CellService cell : gameManager.getBridgeMap()) {
+        Iterator<CellService> cells = gameManager.getBridgeMapIterator();
+        while (cells.hasNext()) {
+            CellService cell = cells.next();
             Index currentCellIndex = cellIndexMap.get(cell);
             CellPanel cellPanel = gridCellViews.get(currentCellIndex.getRow() - minRow).get(currentCellIndex.getCol() - minCol);
             cellPanel.deletePlayer();

@@ -4,6 +4,7 @@ import model.cell.CellService;
 import view.mainView.MainView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public interface GameManager {
     void registerObserver(MainView mainView);
@@ -30,7 +31,7 @@ public interface GameManager {
 
     boolean endTurn();
 
-    ArrayList<CellService> getBridgeMap();
+    Iterator<CellService> getBridgeMapIterator();
 
     ArrayList<Player> getPlayers();
 

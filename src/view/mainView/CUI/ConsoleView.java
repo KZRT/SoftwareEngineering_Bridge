@@ -13,6 +13,7 @@ import view.mainView.MainView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class ConsoleView extends Thread implements MainView {
@@ -29,14 +30,15 @@ public class ConsoleView extends Thread implements MainView {
         HashMap<CellService, Index> cellIndexMap = new HashMap<>();
         gameManager.registerObserver(this);
 
-        ArrayList<CellService> cells = gameManager.getBridgeMap();
+        Iterator<CellService> cells = gameManager.getBridgeMapIterator();
         maxRow = 0;
         maxCol = 0;
         minRow = 0;
         minCol = 0;
         int currentRow = 1, currentCol = 1;
         Direction previousDirection = null;
-        for (CellService cell : cells) {
+        while (cells.hasNext()) {
+            CellService cell = cells.next();
             Direction tempDirection = null;
             if (cell.getClass().getSimpleName().equals("EndCell")) {
                 tempDirection = previousDirection;

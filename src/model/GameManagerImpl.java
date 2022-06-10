@@ -4,6 +4,7 @@ import model.cell.CellService;
 import view.mainView.MainView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GameManagerImpl implements GameManager {
     private static GameManagerImpl gameManager;
@@ -153,8 +154,8 @@ public class GameManagerImpl implements GameManager {
     }
 
     @Override
-    public ArrayList<CellService> getBridgeMap() {
-        return bridgeMap.getMapArrayList();
+    public Iterator<CellService> getBridgeMapIterator() {
+        return bridgeMap.getMapArrayList().iterator();
     }
 
     @Override

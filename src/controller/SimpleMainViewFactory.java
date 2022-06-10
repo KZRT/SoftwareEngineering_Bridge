@@ -1,9 +1,9 @@
-package view.mainView;
+package controller;
 
-import controller.GameController;
 import model.GameManager;
 import view.mainView.CUI.ConsoleView;
 import view.mainView.GUI.MainFrame;
+import view.mainView.MainView;
 
 public class SimpleMainViewFactory {
     public static MainView createMainView(GameManager gameManager, GameController gameController, String type) {
